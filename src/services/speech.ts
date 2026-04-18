@@ -36,7 +36,7 @@ class SpeechService {
     speechSynthesis.cancel();
     const utt = new SpeechSynthesisUtterance(text);
     utt.voice = this.voice;
-    utt.rate = 0.85;
+    utt.rate = 1.0;
     utt.pitch = 1.05;
     speechSynthesis.speak(utt);
   }

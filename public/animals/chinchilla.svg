@@ -1,0 +1,51 @@
+<svg id="emoji" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+  <g id="color">
+    <!-- Fluffy tail (behind body) -->
+    <path fill="#9B9B9A" stroke="none" d="M52,60 Q68,54 66,42 Q64,34 58,36 Q60,44 54,54 Z"/>
+    <path fill="#d0cfce" stroke="none" d="M58,36 Q62,40 60,46 Q58,50 54,52 Q56,44 58,36 Z"/>
+    <!-- Body (very round and fluffy) -->
+    <circle fill="#9B9B9A" stroke="none" cx="34" cy="52" r="17"/>
+    <!-- Belly lighter -->
+    <ellipse fill="#d0cfce" stroke="none" cx="34" cy="55" rx="10" ry="12"/>
+    <!-- Head -->
+    <circle fill="#9B9B9A" stroke="none" cx="34" cy="28" r="18"/>
+    <!-- Face lighter area -->
+    <ellipse fill="#d0cfce" stroke="none" cx="34" cy="30" rx="13" ry="12"/>
+    <!-- Left ear (very large — chinchilla's defining feature) -->
+    <ellipse fill="#9B9B9A" stroke="none" cx="14" cy="14" rx="9" ry="13"/>
+    <ellipse fill="#d0cfce" stroke="none" cx="14" cy="14" rx="6" ry="10"/>
+    <!-- Right ear (very large) -->
+    <ellipse fill="#9B9B9A" stroke="none" cx="54" cy="14" rx="9" ry="13"/>
+    <ellipse fill="#d0cfce" stroke="none" cx="54" cy="14" rx="6" ry="10"/>
+    <!-- Eyes (large, dark) -->
+    <circle fill="#ffffff" stroke="none" cx="26" cy="27" r="6"/>
+    <circle fill="#1a1a1a" stroke="none" cx="26.5" cy="27" r="4.5"/>
+    <circle fill="#ffffff" stroke="none" cx="26" cy="25.5" r="1.5"/>
+    <circle fill="#ffffff" stroke="none" cx="42" cy="27" r="6"/>
+    <circle fill="#1a1a1a" stroke="none" cx="41.5" cy="27" r="4.5"/>
+    <circle fill="#ffffff" stroke="none" cx="42" cy="25.5" r="1.5"/>
+    <!-- Small nose -->
+    <ellipse fill="#c47090" stroke="none" cx="34" cy="36" rx="2.5" ry="2"/>
+    <!-- Whiskers -->
+    <line x1="34" y1="37" x2="20" y2="35" stroke="#9B9B9A" stroke-width="1" stroke-linecap="round"/>
+    <line x1="34" y1="38" x2="20" y2="39" stroke="#9B9B9A" stroke-width="1" stroke-linecap="round"/>
+    <line x1="34" y1="37" x2="48" y2="35" stroke="#9B9B9A" stroke-width="1" stroke-linecap="round"/>
+    <line x1="34" y1="38" x2="48" y2="39" stroke="#9B9B9A" stroke-width="1" stroke-linecap="round"/>
+    <!-- Mouth -->
+    <path fill="none" stroke="#9B9B9A" stroke-linecap="round" stroke-width="1.5" d="M31,39 Q34,42 37,39"/>
+  </g>
+  <g id="hair"/>
+  <g id="skin"/>
+  <g id="skin-shadow"/>
+  <g id="line">
+    <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M52,60 Q68,54 66,42 Q64,34 58,36 Q60,44 54,54 Z"/>
+    <circle fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" cx="34" cy="52" r="17"/>
+    <circle fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" cx="34" cy="28" r="18"/>
+    <ellipse fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" cx="14" cy="14" rx="9" ry="13"/>
+    <ellipse fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" cx="54" cy="14" rx="9" ry="13"/>
+    <circle fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" cx="26" cy="27" r="6"/>
+    <circle fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" cx="42" cy="27" r="6"/>
+    <ellipse fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" cx="34" cy="36" rx="2.5" ry="2"/>
+    <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M31,39 Q34,42 37,39"/>
+  </g>
+</svg>

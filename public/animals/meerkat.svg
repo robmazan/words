@@ -1,0 +1,57 @@
+<svg id="emoji" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+  <g id="color">
+    <!-- Tail (thin, upright) -->
+    <path fill="#9b7240" stroke="none" d="M40,68 Q42,54 44,42 Q46,38 44,36 Q40,36 38,40 Q38,52 36,68 Z"/>
+    <!-- Dark tail tip -->
+    <path fill="#3a2010" stroke="none" d="M38,40 Q40,36 44,36 Q46,34 44,30 Q40,32 38,36 Z"/>
+    <!-- Body (upright, slim) -->
+    <path fill="#c4a058" stroke="none" d="M24,68 Q22,52 24,40 Q26,34 36,33 Q42,34 44,40 Q44,52 44,68 Z"/>
+    <!-- Lighter belly (meerkats have pale bellies) -->
+    <ellipse fill="#f0e0b0" stroke="none" cx="34" cy="52" rx="7" ry="14"/>
+    <!-- Arms (angled slightly forward — typical meerkat pose) -->
+    <path fill="#c4a058" stroke="none" d="M24,42 Q16,46 14,54 Q16,56 20,54 Q22,48 26,46 Z"/>
+    <path fill="#c4a058" stroke="none" d="M44,42 Q52,46 54,54 Q52,56 48,54 Q46,48 42,46 Z"/>
+    <!-- Head (small, oval) -->
+    <ellipse fill="#c4a058" stroke="none" cx="34" cy="24" rx="14" ry="15"/>
+    <!-- Lighter face -->
+    <ellipse fill="#f0e0b0" stroke="none" cx="34" cy="26" rx="9" ry="10"/>
+    <!-- Dark eye patches (distinctive meerkat markings) -->
+    <ellipse fill="#4a3010" stroke="none" cx="27" cy="22" rx="6" ry="5"/>
+    <ellipse fill="#4a3010" stroke="none" cx="41" cy="22" rx="6" ry="5"/>
+    <!-- Small rounded ears -->
+    <ellipse fill="#c4a058" stroke="none" cx="21" cy="13" rx="5" ry="4"/>
+    <ellipse fill="#c47050" stroke="none" cx="21" cy="13" rx="3" ry="2.5"/>
+    <ellipse fill="#c4a058" stroke="none" cx="47" cy="13" rx="5" ry="4"/>
+    <ellipse fill="#c47050" stroke="none" cx="47" cy="13" rx="3" ry="2.5"/>
+    <!-- Eyes -->
+    <circle fill="#ffffff" stroke="none" cx="27" cy="22" r="4"/>
+    <circle fill="#1a1a1a" stroke="none" cx="27.5" cy="22" r="2.5"/>
+    <circle fill="#ffffff" stroke="none" cx="27" cy="21" r="1"/>
+    <circle fill="#ffffff" stroke="none" cx="41" cy="22" r="4"/>
+    <circle fill="#1a1a1a" stroke="none" cx="40.5" cy="22" r="2.5"/>
+    <circle fill="#ffffff" stroke="none" cx="41" cy="21" r="1"/>
+    <!-- Pointed nose -->
+    <ellipse fill="#6A462F" stroke="none" cx="34" cy="31" rx="2.5" ry="2"/>
+    <!-- Mouth -->
+    <path fill="none" stroke="#6A462F" stroke-linecap="round" stroke-width="1.5" d="M31,34 Q34,37 37,34"/>
+    <!-- Paws -->
+    <ellipse fill="#c4a058" stroke="none" cx="14" cy="55" rx="4" ry="3"/>
+    <ellipse fill="#c4a058" stroke="none" cx="54" cy="55" rx="4" ry="3"/>
+  </g>
+  <g id="hair"/>
+  <g id="skin"/>
+  <g id="skin-shadow"/>
+  <g id="line">
+    <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M40,68 Q42,54 44,42 Q46,38 44,36 Q40,36 38,40 Q38,52 36,68 Z"/>
+    <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M24,68 Q22,52 24,40 Q26,34 36,33 Q42,34 44,40 Q44,52 44,68 Z"/>
+    <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M24,42 Q16,46 14,54 Q16,56 20,54 Q22,48 26,46 Z"/>
+    <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M44,42 Q52,46 54,54 Q52,56 48,54 Q46,48 42,46 Z"/>
+    <ellipse fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" cx="34" cy="24" rx="14" ry="15"/>
+    <ellipse fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" cx="21" cy="13" rx="5" ry="4"/>
+    <ellipse fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" cx="47" cy="13" rx="5" ry="4"/>
+    <circle fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" cx="27" cy="22" r="4"/>
+    <circle fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" cx="41" cy="22" r="4"/>
+    <ellipse fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" cx="34" cy="31" rx="2.5" ry="2"/>
+    <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M31,34 Q34,37 37,34"/>
+  </g>
+</svg>

@@ -191,7 +191,7 @@ export class FlashcardGame extends BaseComponent {
 
         <div class="card">
           <div class="prompt">${prompt}</div>
-          ${sw.word.exampleSentence ? `<div class="example">"${sw.word.exampleSentence}"</div>` : ''}
+          ${!isHuToEn && sw.word.exampleSentence ? `<div class="example">"${sw.word.exampleSentence}"</div>` : ''}
         </div>
 
         <div class="input-row">

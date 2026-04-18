@@ -1,0 +1,42 @@
+<svg id="emoji" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+  <g id="color">
+    <!-- Body -->
+    <ellipse fill="#9b7240" stroke="none" cx="36" cy="54" rx="21" ry="13"/>
+    <!-- Head (large, slightly rectangular) -->
+    <ellipse fill="#9b7240" stroke="none" cx="36" cy="31" rx="18" ry="16"/>
+    <!-- Lighter face area -->
+    <ellipse fill="#c4a058" stroke="none" cx="36" cy="33" rx="13" ry="12"/>
+    <!-- Wide flat nose block (capybara's defining feature) -->
+    <rect fill="#6A462F" stroke="none" x="25" y="28" width="22" height="13" rx="5"/>
+    <!-- Left ear (small, rounded) -->
+    <ellipse fill="#9b7240" stroke="none" cx="17" cy="20" rx="6.5" ry="5.5"/>
+    <ellipse fill="#c47050" stroke="none" cx="17" cy="20" rx="4" ry="3.5"/>
+    <!-- Right ear -->
+    <ellipse fill="#9b7240" stroke="none" cx="55" cy="20" rx="6.5" ry="5.5"/>
+    <ellipse fill="#c47050" stroke="none" cx="55" cy="20" rx="4" ry="3.5"/>
+    <!-- Left eye (small, beady) -->
+    <circle fill="#ffffff" stroke="none" cx="27" cy="24" r="4.5"/>
+    <circle fill="#1a1a1a" stroke="none" cx="27.5" cy="24" r="3"/>
+    <!-- Right eye -->
+    <circle fill="#ffffff" stroke="none" cx="45" cy="24" r="4.5"/>
+    <circle fill="#1a1a1a" stroke="none" cx="44.5" cy="24" r="3"/>
+    <!-- Nostrils -->
+    <ellipse fill="#3a2010" stroke="none" cx="31.5" cy="37" rx="2.5" ry="1.8"/>
+    <ellipse fill="#3a2010" stroke="none" cx="40.5" cy="37" rx="2.5" ry="1.8"/>
+    <!-- Mouth -->
+    <path fill="none" stroke="#3a2010" stroke-linecap="round" stroke-width="1.5" d="M31,42 Q36,46 41,42"/>
+  </g>
+  <g id="hair"/>
+  <g id="skin"/>
+  <g id="skin-shadow"/>
+  <g id="line">
+    <ellipse fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" cx="36" cy="54" rx="21" ry="13"/>
+    <ellipse fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" cx="36" cy="31" rx="18" ry="16"/>
+    <rect fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" x="25" y="28" width="22" height="13" rx="5"/>
+    <ellipse fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" cx="17" cy="20" rx="6.5" ry="5.5"/>
+    <ellipse fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" cx="55" cy="20" rx="6.5" ry="5.5"/>
+    <circle fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" cx="27" cy="24" r="4.5"/>
+    <circle fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" cx="45" cy="24" r="4.5"/>
+    <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M31,42 Q36,46 41,42"/>
+  </g>
+</svg>

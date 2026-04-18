@@ -1,0 +1,68 @@
+<svg id="emoji" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+  <g id="color">
+    <!-- Body -->
+    <ellipse fill="#F4A0A0" stroke="none" cx="36" cy="55" rx="14" ry="10"/>
+    <!-- Tail -->
+    <path fill="#F4A0A0" stroke="none" d="M48,54 Q60,50 64,56 Q60,62 48,58 Z"/>
+    <!-- Head (large, round) -->
+    <circle fill="#F4A0A0" stroke="none" cx="30" cy="34" r="18"/>
+    <!-- Face lighter area -->
+    <ellipse fill="#f8c4c4" stroke="none" cx="30" cy="36" rx="13" ry="11"/>
+    <!-- Left gills: 3 feathery stalks -->
+    <line x1="14" y1="28" x2="6" y2="14" stroke="#e06060" stroke-width="3" stroke-linecap="round"/>
+    <circle fill="#c03030" stroke="none" cx="6" cy="13" r="4"/>
+    <line x1="12" y1="22" x2="8" y2="8" stroke="#e06060" stroke-width="3" stroke-linecap="round"/>
+    <circle fill="#c03030" stroke="none" cx="8" cy="7" r="4"/>
+    <line x1="17" y1="18" x2="16" y2="4" stroke="#e06060" stroke-width="3" stroke-linecap="round"/>
+    <circle fill="#c03030" stroke="none" cx="16" cy="3" r="4"/>
+    <!-- Right gills -->
+    <line x1="46" y1="28" x2="54" y2="14" stroke="#e06060" stroke-width="3" stroke-linecap="round"/>
+    <circle fill="#c03030" stroke="none" cx="54" cy="13" r="4"/>
+    <line x1="48" y1="22" x2="52" y2="8" stroke="#e06060" stroke-width="3" stroke-linecap="round"/>
+    <circle fill="#c03030" stroke="none" cx="52" cy="7" r="4"/>
+    <line x1="43" y1="18" x2="44" y2="4" stroke="#e06060" stroke-width="3" stroke-linecap="round"/>
+    <circle fill="#c03030" stroke="none" cx="44" cy="3" r="4"/>
+    <!-- Eyes (large, cute) -->
+    <circle fill="#ffffff" stroke="none" cx="23" cy="31" r="6"/>
+    <circle fill="#1a1a1a" stroke="none" cx="24" cy="31" r="4"/>
+    <circle fill="#ffffff" stroke="none" cx="24" cy="30" r="1.5"/>
+    <circle fill="#ffffff" stroke="none" cx="37" cy="31" r="6"/>
+    <circle fill="#1a1a1a" stroke="none" cx="36" cy="31" r="4"/>
+    <circle fill="#ffffff" stroke="none" cx="36" cy="30" r="1.5"/>
+    <!-- Wide smile (axolotls always look happy) -->
+    <path fill="none" stroke="#d06060" stroke-linecap="round" stroke-width="2" d="M20,40 Q30,47 40,40"/>
+    <!-- Legs -->
+    <ellipse fill="#F4A0A0" stroke="none" cx="24" cy="63" rx="5" ry="4"/>
+    <ellipse fill="#F4A0A0" stroke="none" cx="38" cy="65" rx="5" ry="4"/>
+  </g>
+  <g id="hair"/>
+  <g id="skin"/>
+  <g id="skin-shadow"/>
+  <g id="line">
+    <ellipse fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" cx="36" cy="55" rx="14" ry="10"/>
+    <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M48,54 Q60,50 64,56 Q60,62 48,58 Z"/>
+    <circle fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" cx="30" cy="34" r="18"/>
+    <!-- Left gills outline -->
+    <line x1="14" y1="28" x2="6" y2="14" fill="none" stroke="#000000" stroke-linecap="round" stroke-width="2"/>
+    <circle fill="none" stroke="#000000" stroke-width="2" cx="6" cy="13" r="4"/>
+    <line x1="12" y1="22" x2="8" y2="8" fill="none" stroke="#000000" stroke-linecap="round" stroke-width="2"/>
+    <circle fill="none" stroke="#000000" stroke-width="2" cx="8" cy="7" r="4"/>
+    <line x1="17" y1="18" x2="16" y2="4" fill="none" stroke="#000000" stroke-linecap="round" stroke-width="2"/>
+    <circle fill="none" stroke="#000000" stroke-width="2" cx="16" cy="3" r="4"/>
+    <!-- Right gills outline -->
+    <line x1="46" y1="28" x2="54" y2="14" fill="none" stroke="#000000" stroke-linecap="round" stroke-width="2"/>
+    <circle fill="none" stroke="#000000" stroke-width="2" cx="54" cy="13" r="4"/>
+    <line x1="48" y1="22" x2="52" y2="8" fill="none" stroke="#000000" stroke-linecap="round" stroke-width="2"/>
+    <circle fill="none" stroke="#000000" stroke-width="2" cx="52" cy="7" r="4"/>
+    <line x1="43" y1="18" x2="44" y2="4" fill="none" stroke="#000000" stroke-linecap="round" stroke-width="2"/>
+    <circle fill="none" stroke="#000000" stroke-width="2" cx="44" cy="3" r="4"/>
+    <!-- Eyes -->
+    <circle fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" cx="23" cy="31" r="6"/>
+    <circle fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" cx="37" cy="31" r="6"/>
+    <!-- Smile -->
+    <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M20,40 Q30,47 40,40"/>
+    <!-- Legs -->
+    <ellipse fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" cx="24" cy="63" rx="5" ry="4"/>
+    <ellipse fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" cx="38" cy="65" rx="5" ry="4"/>
+  </g>
+</svg>

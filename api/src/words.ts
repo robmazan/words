@@ -2,6 +2,8 @@ import { app, HttpRequest, HttpResponseInit, InvocationContext } from '@azure/fu
 import { BlobServiceClient } from '@azure/storage-blob';
 import { parse } from 'csv-parse/sync';
 import { getUserFromRequest } from './utils/auth.js';
+import { readFile } from 'fs/promises';
+import path from 'path';
 
 interface WordRow {
   id: string;
@@ -26,19 +28,24 @@ async function fetchWords(): Promise<WordRow[]> {
   if (cachedWords && now - cacheTime < CACHE_TTL) return cachedWords;
 
   const connStr = process.env.AZURE_STORAGE_CONNECTION_STRING!;
-  const container = process.env.WORDS_BLOB_CONTAINER ?? 'words';
-  const blobName = process.env.WORDS_BLOB_NAME ?? 'vocabulary.csv';
+  let csv: string;
 
-  const client = BlobServiceClient.fromConnectionString(connStr);
-  const containerClient = client.getContainerClient(container);
-  const blobClient = containerClient.getBlobClient(blobName);
-
-  const download = await blobClient.download();
-  const chunks: Buffer[] = [];
-  for await (const chunk of download.readableStreamBody as NodeJS.ReadableStream) {
-    chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk as Uint8Array));
+  if (connStr === 'UseDevelopmentStorage=true') {
+    const localPath = process.env.WORDS_LOCAL_PATH ?? path.resolve(process.cwd(), '../vocabulary.csv');
+    csv = await readFile(localPath, 'utf-8');
+  } else {
+    const container = process.env.WORDS_BLOB_CONTAINER ?? 'words';
+    const blobName = process.env.WORDS_BLOB_NAME ?? 'vocabulary.csv';
+    const client = BlobServiceClient.fromConnectionString(connStr);
+    const containerClient = client.getContainerClient(container);
+    const blobClient = containerClient.getBlobClient(blobName);
+    const download = await blobClient.download();
+    const chunks: Buffer[] = [];
+    for await (const chunk of download.readableStreamBody as NodeJS.ReadableStream) {
+      chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk as unknown as Uint8Array));
+    }
+    csv = Buffer.concat(chunks).toString('utf-8');
   }
-  const csv = Buffer.concat(chunks).toString('utf-8');
 
   const records = parse(csv, {
     columns: ['english', 'hungarian', 'exampleSentence', 'dateAdded'],

@@ -23,11 +23,18 @@ const MASTERY_INTERVALS_DAYS: Record<number, number> = {
   0: 0, 1: 1, 2: 3, 3: 7, 4: 21,
 };
 
-function getTableClient(): TableClient {
-  return TableClient.fromConnectionString(
+let tableReady = false;
+
+async function getTableClient(): Promise<TableClient> {
+  const client = TableClient.fromConnectionString(
     process.env.AZURE_STORAGE_CONNECTION_STRING!,
     'UserProgress',
   );
+  if (!tableReady) {
+    try { await client.createTable(); } catch { /* already exists */ }
+    tableReady = true;
+  }
+  return client;
 }
 
 function nextReviewDate(masteryLevel: number): string {
@@ -46,7 +53,7 @@ export async function handleProgress(
 
   if (req.method === 'GET') {
     try {
-      const client = getTableClient();
+      const client = await getTableClient();
       const entities: ProgressEntity[] = [];
       for await (const entity of client.listEntities<ProgressEntity>({
         queryOptions: { filter: odata`PartitionKey eq ${user.userId}` },
@@ -75,7 +82,7 @@ export async function handleProgress(
   if (req.method === 'PUT') {
     try {
       const results = (await req.json()) as SessionResult[];
-      const client = getTableClient();
+      const client = await getTableClient();
       const now = new Date().toISOString();
 
       // Fetch existing progress for these words
