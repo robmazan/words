@@ -1,0 +1,81 @@
+:root {
+  --color-primary: #5a8a2a;
+  --color-primary-light: #7ab03a;
+  --color-primary-dark: #3d6a1a;
+  --color-accent: #f4a832;
+  --color-accent-light: #ffc55a;
+  --color-surface: #fdf6e3;
+  --color-surface-alt: #f5ead0;
+  --color-text: #2c2c2c;
+  --color-text-muted: #6b6b6b;
+  --color-success: #4caf50;
+  --color-error: #e53935;
+  --color-locked: #b0b0b0;
+
+  --font-body: 'Nunito', sans-serif;
+
+  --radius-sm: 8px;
+  --radius-card: 16px;
+  --radius-pill: 9999px;
+
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lift: 0 8px 24px rgba(0, 0, 0, 0.15);
+
+  --transition-fast: 150ms ease;
+  --transition-med: 250ms ease;
+  --transition-slow: 400ms ease;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 40px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--font-body);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+capybara-app {
+  display: block;
+  height: 100%;
+}
+
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-8px); }
+}
+
+@keyframes pop-in {
+  0%   { transform: scale(0.5); opacity: 0; }
+  70%  { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-6px); }
+  40%       { transform: translateX(6px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+
+@keyframes xp-fill {
+  from { width: var(--xp-from); }
+  to   { width: var(--xp-to); }
+}
