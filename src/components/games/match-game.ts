@@ -1,4 +1,5 @@
 import { BaseComponent } from '../base-component.js';
+import styles from './match-game.css?raw';
 import { wordsStore, progressStore } from '../../services/store.js';
 import { selectSessionWords } from '../../services/session.js';
 import type { SessionWord, SessionResult } from '../../models/types.js';
@@ -79,122 +80,7 @@ export class MatchGame extends BaseComponent {
     const total = this.cards.length / 2;
 
     this.root.innerHTML = `
-      <style>
-        :host {
-          display: flex;
-          flex-direction: column;
-          min-height: 100vh;
-          background: var(--color-surface);
-          font-family: var(--font-body);
-        }
-
-        .progress-bar-wrap { height: 6px; background: var(--color-surface-alt); }
-        .progress-bar {
-          height: 100%;
-          background: var(--color-primary-light);
-          transition: width 0.4s ease;
-          width: ${((progress / total) * 100).toFixed(1)}%;
-        }
-
-        .header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 14px 20px;
-          font-weight: 700;
-          color: var(--color-text-muted);
-          font-size: 0.9rem;
-        }
-
-        .quit-btn {
-          background: none; border: none;
-          font-family: var(--font-body); font-size: 0.85rem;
-          color: var(--color-text-muted); cursor: pointer;
-        }
-        .quit-btn:hover { color: var(--color-error); }
-
-        main {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          padding: 16px;
-          gap: 16px;
-        }
-
-        .instructions {
-          font-size: 0.85rem;
-          font-weight: 700;
-          color: var(--color-text-muted);
-        }
-
-        .grid {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 10px;
-          width: 100%;
-          max-width: 560px;
-        }
-
-        .card-wrap {
-          aspect-ratio: 3/4;
-          perspective: 600px;
-          cursor: pointer;
-        }
-
-        .card-inner {
-          width: 100%;
-          height: 100%;
-          position: relative;
-          transform-style: preserve-3d;
-          transition: transform 0.4s ease;
-          border-radius: var(--radius-card);
-        }
-
-        .card-wrap.flipped .card-inner,
-        .card-wrap.matched .card-inner {
-          transform: rotateY(180deg);
-        }
-
-        .card-face {
-          position: absolute;
-          inset: 0;
-          border-radius: var(--radius-card);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 8px;
-          text-align: center;
-          backface-visibility: hidden;
-          -webkit-backface-visibility: hidden;
-        }
-
-        .card-back {
-          background: var(--color-primary);
-          box-shadow: var(--shadow-card);
-          font-size: 1.6rem;
-        }
-
-        .card-front {
-          background: white;
-          box-shadow: var(--shadow-card);
-          transform: rotateY(180deg);
-          font-size: 0.85rem;
-          font-weight: 700;
-          color: var(--color-text);
-          word-break: break-word;
-          hyphens: auto;
-        }
-
-        .card-front.en { border-top: 3px solid var(--color-primary-light); }
-        .card-front.hu { border-top: 3px solid var(--color-accent); }
-
-        .card-wrap.matched .card-front {
-          background: #d1fae5;
-          border-color: var(--color-success);
-        }
-      </style>
+      <style>${styles}</style>
 
       <div class="progress-bar-wrap"><div class="progress-bar"></div></div>
 
@@ -221,6 +107,9 @@ export class MatchGame extends BaseComponent {
         </div>
       </main>
     `;
+
+    const bar = this.root.querySelector('.progress-bar') as HTMLElement | null;
+    if (bar) bar.style.width = `${((progress / total) * 100).toFixed(1)}%`;
 
     this.root.querySelectorAll('.card-wrap').forEach((el) => {
       el.addEventListener('click', () => {

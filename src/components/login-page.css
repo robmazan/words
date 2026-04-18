@@ -1,0 +1,76 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-alt) 100%);
+  font-family: var(--font-body);
+}
+
+.card {
+  background: white;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-lift);
+  padding: 48px 40px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  animation: fade-in 0.4s ease both;
+}
+
+.mascot {
+  width: 120px;
+  margin-bottom: 16px;
+  animation: bounce 0.7s ease infinite alternate;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--color-primary);
+  margin-bottom: 4px;
+}
+
+.tagline {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  margin-bottom: 32px;
+  font-weight: 600;
+}
+
+.login-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 14px 28px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.login-btn:hover {
+  background: var(--color-primary-dark);
+  transform: scale(1.03);
+}
+
+.login-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+@keyframes bounce {
+  from { transform: translateY(0) rotate(-2deg); }
+  to   { transform: translateY(-10px) rotate(2deg); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

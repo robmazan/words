@@ -1,4 +1,5 @@
 import { BaseComponent } from '../base-component.js';
+import styles from './spelling-game.css?raw';
 import { wordsStore, progressStore } from '../../services/store.js';
 import { selectSessionWords } from '../../services/session.js';
 import { speech } from '../../services/speech.js';
@@ -37,180 +38,7 @@ export class SpellingGame extends BaseComponent {
     const hasVoice = speech.isAvailable();
 
     this.root.innerHTML = `
-      <style>
-        :host {
-          display: flex;
-          flex-direction: column;
-          min-height: 100vh;
-          background: var(--color-surface);
-          font-family: var(--font-body);
-        }
-
-        .progress-bar-wrap { height: 6px; background: var(--color-surface-alt); }
-        .progress-bar {
-          height: 100%;
-          background: var(--color-accent);
-          width: ${((this.current / this.session.length) * 100).toFixed(1)}%;
-          transition: width 0.3s ease;
-        }
-
-        .header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 14px 20px;
-          font-weight: 700;
-          color: var(--color-text-muted);
-          font-size: 0.9rem;
-        }
-
-        .quit-btn {
-          background: none;
-          border: none;
-          font-family: var(--font-body);
-          font-size: 0.85rem;
-          color: var(--color-text-muted);
-          cursor: pointer;
-        }
-        .quit-btn:hover { color: var(--color-error); }
-
-        main {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          padding: 24px;
-          gap: 20px;
-        }
-
-        .hint {
-          font-size: 0.85rem;
-          font-weight: 700;
-          color: var(--color-text-muted);
-          text-align: center;
-        }
-
-        .hungarian-hint {
-          font-size: 1.1rem;
-          font-weight: 700;
-          color: var(--color-primary-dark);
-          background: white;
-          border-radius: var(--radius-card);
-          padding: 10px 20px;
-          box-shadow: var(--shadow-card);
-        }
-
-        .speak-row {
-          display: flex;
-          gap: 12px;
-        }
-
-        .speak-btn {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          background: var(--color-accent);
-          color: white;
-          border: none;
-          border-radius: var(--radius-pill);
-          padding: 14px 24px;
-          font-family: var(--font-body);
-          font-size: 1rem;
-          font-weight: 700;
-          cursor: pointer;
-          transition: background var(--transition-fast), transform var(--transition-fast);
-        }
-        .speak-btn:hover { background: var(--color-accent-light); transform: scale(1.04); }
-        .speak-btn:disabled { opacity: 0.5; cursor: default; transform: none; }
-
-        .letter-reveal {
-          display: flex;
-          gap: 6px;
-          flex-wrap: wrap;
-          justify-content: center;
-          min-height: 48px;
-        }
-
-        .letter {
-          width: 40px;
-          height: 48px;
-          background: white;
-          border: 2px solid var(--color-surface-alt);
-          border-radius: var(--radius-sm);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 1.3rem;
-          font-weight: 900;
-          color: var(--color-primary-dark);
-          animation: pop-in 0.2s ease both;
-          animation-delay: calc(var(--i) * 0.05s);
-          box-shadow: var(--shadow-card);
-        }
-
-        .input-row {
-          display: flex;
-          gap: 8px;
-          width: 100%;
-          max-width: 480px;
-        }
-
-        input {
-          flex: 1;
-          border: 2px solid var(--color-surface-alt);
-          border-radius: var(--radius-card);
-          padding: 14px 16px;
-          font-family: var(--font-body);
-          font-size: 1.2rem;
-          font-weight: 600;
-          outline: none;
-          transition: border-color var(--transition-fast);
-          background: white;
-          letter-spacing: 0.08em;
-        }
-        input:focus { border-color: var(--color-accent); }
-        input.correct { border-color: var(--color-success); background: #f0fdf4; }
-        input.wrong   { border-color: var(--color-error); animation: shake 0.35s ease; }
-
-        .submit-btn {
-          background: var(--color-primary);
-          color: white;
-          border: none;
-          border-radius: var(--radius-card);
-          padding: 14px 20px;
-          font-family: var(--font-body);
-          font-size: 1rem;
-          font-weight: 700;
-          cursor: pointer;
-        }
-        .submit-btn:hover { background: var(--color-primary-dark); }
-
-        .feedback {
-          font-size: 1rem;
-          font-weight: 700;
-          padding: 12px 20px;
-          border-radius: var(--radius-card);
-          text-align: center;
-          width: 100%;
-          max-width: 480px;
-        }
-        .correct-fb { background: #d1fae5; color: #065f46; }
-        .wrong-fb   { background: #fee2e2; color: #991b1b; }
-
-        @keyframes pop-in {
-          0%  { transform: scale(0.5); opacity: 0; }
-          70% { transform: scale(1.1); }
-          100%{ transform: scale(1); opacity: 1; }
-        }
-        @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          20%       { transform: translateX(-6px); }
-          40%       { transform: translateX(6px); }
-          60%       { transform: translateX(-4px); }
-          80%       { transform: translateX(4px); }
-        }
-      </style>
+      <style>${styles}</style>
 
       <div class="progress-bar-wrap"><div class="progress-bar"></div></div>
 
@@ -254,6 +82,9 @@ export class SpellingGame extends BaseComponent {
         <div class="feedback" style="display:none"></div>
       </main>
     `;
+
+    const bar = this.root.querySelector('.progress-bar') as HTMLElement | null;
+    if (bar) bar.style.width = `${((this.current / this.session.length) * 100).toFixed(1)}%`;
 
     const input = this.root.getElementById('answer') as HTMLInputElement;
     const speakBtn = this.root.getElementById('speak-btn') as HTMLButtonElement;

@@ -1,4 +1,5 @@
 import { BaseComponent } from './base-component.js';
+import styles from './capybara-app.css?raw';
 import { getCurrentUser } from '../services/auth.js';
 import { api } from '../services/api.js';
 import { speech } from '../services/speech.js';
@@ -113,30 +114,7 @@ export class CapybaraApp extends BaseComponent {
 
   private loadingTemplate(): string {
     return `
-      <style>
-        .loader {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          height: 100vh;
-          gap: 16px;
-          font-family: var(--font-body);
-          color: var(--color-primary);
-        }
-        .loader img {
-          width: 80px;
-          animation: bounce 0.6s ease infinite alternate;
-        }
-        .loader p {
-          font-size: 1.1rem;
-          font-weight: 700;
-        }
-        @keyframes bounce {
-          from { transform: translateY(0); }
-          to   { transform: translateY(-10px); }
-        }
-      </style>
+      <style>${styles}</style>
       <div class="loader">
         <img src="/animals/capybara.svg" alt="Loading…" />
         <p>Loading Capybara Academy…</p>
@@ -145,13 +123,7 @@ export class CapybaraApp extends BaseComponent {
   }
 
   private sharedStyles(): string {
-    return `
-      :host {
-        display: block;
-        height: 100%;
-        font-family: var(--font-body);
-      }
-    `;
+    return styles;
   }
 }
 

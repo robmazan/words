@@ -1,4 +1,5 @@
 import { BaseComponent } from './base-component.js';
+import styles from './results-screen.css?raw';
 import { wordsStore, progressStore, profileStore } from '../services/store.js';
 import { api } from '../services/api.js';
 import {
@@ -92,242 +93,7 @@ export class ResultsScreen extends BaseComponent {
     const xpBarTo = Math.max(0, (newXP - levelThreshold(newLevel)) / (levelThreshold(newLevel + 1) - levelThreshold(newLevel))) * 100;
 
     this.root.innerHTML = `
-      <style>
-        :host {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          min-height: 100vh;
-          background: linear-gradient(160deg, var(--color-surface) 60%, var(--color-surface-alt) 100%);
-          font-family: var(--font-body);
-          padding: 32px 24px 64px;
-        }
-
-        .trophy {
-          font-size: 4rem;
-          animation: pop-in 0.5s ease both;
-          margin-bottom: 8px;
-        }
-
-        h1 {
-          font-size: 1.8rem;
-          font-weight: 900;
-          color: var(--color-primary-dark);
-          margin-bottom: 4px;
-          animation: fade-in 0.4s 0.1s ease both;
-        }
-
-        .subtitle {
-          color: var(--color-text-muted);
-          font-weight: 600;
-          margin-bottom: 24px;
-          animation: fade-in 0.4s 0.15s ease both;
-        }
-
-        .score-row {
-          display: flex;
-          gap: 16px;
-          margin-bottom: 24px;
-          flex-wrap: wrap;
-          justify-content: center;
-          animation: fade-in 0.4s 0.2s ease both;
-        }
-
-        .score-card {
-          background: white;
-          border-radius: var(--radius-card);
-          box-shadow: var(--shadow-card);
-          padding: 16px 24px;
-          text-align: center;
-          min-width: 90px;
-        }
-
-        .score-val {
-          font-size: 2rem;
-          font-weight: 900;
-          line-height: 1;
-        }
-        .score-val.correct { color: var(--color-success); }
-        .score-val.wrong   { color: var(--color-error); }
-        .score-val.xp      { color: var(--color-accent); }
-
-        .score-lbl {
-          font-size: 0.75rem;
-          font-weight: 700;
-          color: var(--color-text-muted);
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-          margin-top: 4px;
-        }
-
-        .xp-section {
-          width: 100%;
-          max-width: 400px;
-          margin-bottom: 24px;
-          animation: fade-in 0.4s 0.3s ease both;
-        }
-
-        .xp-label {
-          display: flex;
-          justify-content: space-between;
-          font-size: 0.85rem;
-          font-weight: 700;
-          color: var(--color-text-muted);
-          margin-bottom: 6px;
-        }
-
-        .xp-bar-wrap {
-          background: var(--color-surface-alt);
-          border-radius: var(--radius-pill);
-          height: 14px;
-          overflow: hidden;
-        }
-
-        .xp-bar {
-          height: 100%;
-          background: linear-gradient(90deg, var(--color-primary-light), var(--color-accent));
-          border-radius: var(--radius-pill);
-          --xp-from: ${xpBarFrom.toFixed(1)}%;
-          --xp-to: ${xpBarTo.toFixed(1)}%;
-          width: ${xpBarTo.toFixed(1)}%;
-          animation: xp-fill 1s 0.5s ease both;
-        }
-
-        .level-up {
-          background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-          color: white;
-          border-radius: var(--radius-pill);
-          padding: 8px 20px;
-          font-weight: 800;
-          font-size: 1rem;
-          text-align: center;
-          margin-bottom: 16px;
-          animation: pop-in 0.4s 0.8s ease both;
-          opacity: 0;
-          animation-fill-mode: both;
-        }
-
-        .animals-section {
-          width: 100%;
-          max-width: 480px;
-          margin-bottom: 24px;
-          animation: fade-in 0.4s 0.4s ease both;
-        }
-
-        .animals-section h2 {
-          font-size: 1rem;
-          font-weight: 800;
-          color: var(--color-text);
-          margin-bottom: 12px;
-        }
-
-        .animals-row {
-          display: flex;
-          gap: 10px;
-          flex-wrap: wrap;
-        }
-
-        .animal-chip {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          background: #d1fae5;
-          border: 2px solid var(--color-success);
-          border-radius: var(--radius-pill);
-          padding: 6px 12px;
-          font-weight: 700;
-          font-size: 0.85rem;
-          color: #065f46;
-          animation: pop-in 0.3s ease both;
-        }
-
-        .animal-chip img {
-          width: 24px;
-          height: 24px;
-          object-fit: contain;
-        }
-
-        .badges-section {
-          width: 100%;
-          max-width: 480px;
-          margin-bottom: 24px;
-          animation: fade-in 0.4s 0.5s ease both;
-        }
-
-        .badges-section h2 {
-          font-size: 1rem;
-          font-weight: 800;
-          color: var(--color-text);
-          margin-bottom: 12px;
-        }
-
-        .badge-chip {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          background: #fef3c7;
-          border: 2px solid var(--color-accent);
-          border-radius: var(--radius-pill);
-          padding: 6px 14px;
-          font-weight: 700;
-          font-size: 0.9rem;
-          color: #92400e;
-          margin-right: 8px;
-          margin-bottom: 8px;
-          animation: pop-in 0.3s ease both;
-        }
-
-        .btn-row {
-          display: flex;
-          gap: 12px;
-          margin-top: 8px;
-          flex-wrap: wrap;
-          justify-content: center;
-          animation: fade-in 0.4s 0.6s ease both;
-        }
-
-        .btn-primary {
-          background: var(--color-primary);
-          color: white;
-          border: none;
-          border-radius: var(--radius-pill);
-          padding: 14px 28px;
-          font-family: var(--font-body);
-          font-size: 1rem;
-          font-weight: 700;
-          cursor: pointer;
-          transition: background var(--transition-fast), transform var(--transition-fast);
-        }
-        .btn-primary:hover { background: var(--color-primary-dark); transform: scale(1.03); }
-
-        .btn-secondary {
-          background: white;
-          color: var(--color-primary);
-          border: 2px solid var(--color-primary-light);
-          border-radius: var(--radius-pill);
-          padding: 12px 24px;
-          font-family: var(--font-body);
-          font-size: 1rem;
-          font-weight: 700;
-          cursor: pointer;
-          transition: border-color var(--transition-fast);
-        }
-        .btn-secondary:hover { border-color: var(--color-primary); }
-
-        @keyframes pop-in {
-          0%  { transform: scale(0.5); opacity: 0; }
-          70% { transform: scale(1.08); }
-          100%{ transform: scale(1); opacity: 1; }
-        }
-        @keyframes fade-in {
-          from { opacity: 0; transform: translateY(8px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes xp-fill {
-          from { width: var(--xp-from); }
-          to   { width: var(--xp-to); }
-        }
-      </style>
+      <style>${styles}</style>
 
       <div class="trophy">${isPerfect ? '🏆' : correct > wrong ? '⭐' : '💪'}</div>
       <h1>${isPerfect ? 'Perfect!' : correct > wrong ? 'Great job!' : 'Keep going!'}</h1>
@@ -387,6 +153,13 @@ export class ResultsScreen extends BaseComponent {
         <button class="btn-secondary" id="go-zoo">Visit Zoo 🦎</button>
       </div>
     `;
+
+    const xpBar = this.root.querySelector('.xp-bar') as HTMLElement | null;
+    if (xpBar) {
+      xpBar.style.setProperty('--xp-from', `${xpBarFrom.toFixed(1)}%`);
+      xpBar.style.setProperty('--xp-to', `${xpBarTo.toFixed(1)}%`);
+      xpBar.style.width = `${xpBarTo.toFixed(1)}%`;
+    }
 
     this.root.getElementById('play-again')?.addEventListener('click', () => this.navigate('/'));
     this.root.getElementById('go-zoo')?.addEventListener('click', () => this.navigate('/zoo'));
