@@ -1,10 +1,11 @@
+import { render, html } from 'lit-html';
 import { BaseComponent } from './base-component.js';
 import { getLoginUrl } from '../services/auth.js';
 import styles from './login-page.css?raw';
 
 export class LoginPage extends BaseComponent {
   connectedCallback(): void {
-    this.root.innerHTML = `
+    render(html`
       <style>${styles}</style>
 
       <div class="card">
@@ -19,7 +20,7 @@ export class LoginPage extends BaseComponent {
           Sign in with Microsoft
         </a>
       </div>
-    `;
+    `, this.root);
   }
 }
 

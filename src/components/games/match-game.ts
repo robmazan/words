@@ -1,3 +1,5 @@
+import { render, html } from 'lit-html';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { BaseComponent } from '../base-component.js';
 import styles from './match-game.css?raw';
 import { wordsStore, progressStore } from '../../services/store.js';
@@ -76,61 +78,48 @@ export class MatchGame extends BaseComponent {
 
   private renderBoard(): void {
     const totalRounds = Math.ceil(this.allWords.length / PAIRS_PER_ROUND);
-    const progress = this.cards.filter((c) => c.matched).length / 2;
+    const matched = this.cards.filter((c) => c.matched).length / 2;
     const total = this.cards.length / 2;
 
-    this.root.innerHTML = `
+    render(html`
       <style>${styles}</style>
 
-      <div class="progress-bar-wrap"><div class="progress-bar"></div></div>
+      <div class="progress-bar-wrap"><div class="progress-bar" style="width:${((matched / total) * 100).toFixed(1)}%"></div></div>
 
       <div class="header">
         <span>🧩 Match — Round ${this.round + 1}/${totalRounds}</span>
-        <button class="quit-btn">✕ Quit</button>
+        <button class="quit-btn" @click=${() => this.navigate('/')}>✕ Quit</button>
       </div>
 
       <main>
         <p class="instructions">Match each English word with its Hungarian pair</p>
 
         <div class="grid" id="grid">
-          ${this.cards.map((card) => `
+          ${this.cards.map((card) => html`
             <div
-              class="card-wrap${card.flipped ? ' flipped' : ''}${card.matched ? ' matched' : ''}"
+              class=${classMap({ 'card-wrap': true, flipped: card.flipped, matched: card.matched })}
               data-id="${card.id}"
+              @click=${() => this.flipCard(card.id)}
             >
               <div class="card-inner">
                 <div class="card-face card-back">🌿</div>
                 <div class="card-face card-front ${card.side}">${card.text}</div>
               </div>
             </div>
-          `).join('')}
+          `)}
         </div>
       </main>
-    `;
-
-    const bar = this.root.querySelector('.progress-bar') as HTMLElement | null;
-    if (bar) bar.style.width = `${((progress / total) * 100).toFixed(1)}%`;
-
-    this.root.querySelectorAll('.card-wrap').forEach((el) => {
-      el.addEventListener('click', () => {
-        if (this.lockBoard) return;
-        const id = (el as HTMLElement).dataset.id!;
-        this.flipCard(id);
-      });
-    });
-
-    this.root.querySelector('.quit-btn')?.addEventListener('click', () => this.navigate('/'));
+    `, this.root);
   }
 
   private flipCard(id: string): void {
+    if (this.lockBoard) return;
     const card = this.cards.find((c) => c.id === id);
     if (!card || card.matched || card.flipped || this.flippedCards.length >= 2) return;
 
     card.flipped = true;
     this.flippedCards.push(id);
-
-    const el = this.root.querySelector(`[data-id="${id}"]`) as HTMLElement;
-    el.classList.add('flipped');
+    this.renderBoard();
 
     if (this.flippedCards.length === 2) {
       this.lockBoard = true;
@@ -149,10 +138,6 @@ export class MatchGame extends BaseComponent {
       if (isMatch) {
         c1.matched = true;
         c2.matched = true;
-        const el1 = this.root.querySelector(`[data-id="${id1}"]`);
-        const el2 = this.root.querySelector(`[data-id="${id2}"]`);
-        el1?.classList.add('matched');
-        el2?.classList.add('matched');
 
         this.totalResults.push({
           wordId: c1.wordId,
@@ -160,6 +145,10 @@ export class MatchGame extends BaseComponent {
           correct: true,
           responseTimeMs: 0,
         });
+
+        this.flippedCards = [];
+        this.lockBoard = false;
+        this.renderBoard();
 
         if (this.cards.every((c) => c.matched)) {
           setTimeout(() => {
@@ -170,14 +159,10 @@ export class MatchGame extends BaseComponent {
       } else {
         c1.flipped = false;
         c2.flipped = false;
-        const el1 = this.root.querySelector(`[data-id="${id1}"]`);
-        const el2 = this.root.querySelector(`[data-id="${id2}"]`);
-        el1?.classList.remove('flipped');
-        el2?.classList.remove('flipped');
+        this.flippedCards = [];
+        this.lockBoard = false;
+        this.renderBoard();
       }
-
-      this.flippedCards = [];
-      this.lockBoard = false;
     }, 900);
   }
 }

@@ -1,3 +1,4 @@
+import { render, html, nothing } from 'lit-html';
 import { BaseComponent } from '../base-component.js';
 import styles from './flashcard-game.css?raw';
 import { wordsStore, progressStore } from '../../services/store.js';
@@ -32,14 +33,14 @@ export class FlashcardGame extends BaseComponent {
     this.startTime = Date.now();
     this.showingAnswer = false;
 
-    this.root.innerHTML = `
+    render(html`
       <style>${styles}</style>
 
       <div class="progress-bar-wrap"><div class="progress-bar"></div></div>
 
       <div class="header">
         <span>🃏 Flash Cards — ${this.current + 1} / ${this.session.length}</span>
-        <button class="quit-btn">✕ Quit</button>
+        <button class="quit-btn" @click=${() => this.navigate('/')}>✕ Quit</button>
       </div>
 
       <main>
@@ -47,7 +48,7 @@ export class FlashcardGame extends BaseComponent {
 
         <div class="card">
           <div class="prompt">${prompt}</div>
-          ${!isHuToEn && sw.word.exampleSentence ? `<div class="example">"${sw.word.exampleSentence}"</div>` : ''}
+          ${!isHuToEn && sw.word.exampleSentence ? html`<div class="example">"${sw.word.exampleSentence}"</div>` : nothing}
         </div>
 
         <div class="input-row">
@@ -65,7 +66,7 @@ export class FlashcardGame extends BaseComponent {
 
         <div class="feedback" style="display:none"></div>
       </main>
-    `;
+    `, this.root);
 
     const bar = this.root.querySelector('.progress-bar') as HTMLElement | null;
     if (bar) bar.style.width = `${((this.current / this.session.length) * 100).toFixed(1)}%`;
@@ -87,9 +88,6 @@ export class FlashcardGame extends BaseComponent {
       if (e.key === 'Enter') submit();
     });
     submitBtn.addEventListener('click', submit);
-    this.root.querySelector('.quit-btn')?.addEventListener('click', () => {
-      this.navigate('/');
-    });
 
     input.focus();
   }

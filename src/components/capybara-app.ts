@@ -1,3 +1,5 @@
+import { render, html } from 'lit-html';
+import type { TemplateResult } from 'lit-html';
 import { BaseComponent } from './base-component.js';
 import styles from './capybara-app.css?raw';
 import { getCurrentUser } from '../services/auth.js';
@@ -18,7 +20,13 @@ export class CapybaraApp extends BaseComponent {
   private currentPath = '/';
 
   connectedCallback(): void {
-    this.root.innerHTML = this.loadingTemplate();
+    render(html`
+      <style>${styles}</style>
+      <div class="loader">
+        <img src="/animals/capybara.svg" alt="Loading…" />
+        <p>Loading Capybara Academy…</p>
+      </div>
+    `, this.root);
 
     window.addEventListener('popstate', () => this.renderRoute(location.pathname));
     this.addEventListener('navigate', (e: Event) => {
@@ -29,13 +37,10 @@ export class CapybaraApp extends BaseComponent {
     this.addEventListener('session-complete', (e: Event) => {
       const { results } = (e as CustomEvent).detail;
       history.pushState({}, '', '/results');
-      const el = document.createElement('results-screen') as HTMLElement & { sessionResults: unknown };
-      this.root.innerHTML = '';
-      const style = document.createElement('style');
-      style.textContent = this.sharedStyles();
-      this.root.appendChild(style);
-      this.root.appendChild(el);
-      el.sessionResults = results;
+      render(html`
+        <style>${styles}</style>
+        <results-screen .sessionResults=${results}></results-screen>
+      `, this.root);
     });
 
     this.boot();
@@ -79,51 +84,29 @@ export class CapybaraApp extends BaseComponent {
 
   private renderRoute(path: string): void {
     this.currentPath = path;
-    this.root.innerHTML = '';
-
-    const styles = this.sharedStyles();
-    const style = document.createElement('style');
-    style.textContent = styles;
-    this.root.appendChild(style);
-
-    const el = this.resolveRoute(path);
-    this.root.appendChild(el);
+    render(html`
+      <style>${styles}</style>
+      ${this.resolveRouteTemplate(path)}
+    `, this.root);
   }
 
-  private resolveRoute(path: string): HTMLElement {
-    if (path === '/login') return document.createElement('login-page');
-    if (path === '/zoo') return document.createElement('zoo-view');
+  private resolveRouteTemplate(path: string): TemplateResult {
+    if (path === '/login') return html`<login-page></login-page>`;
+    if (path === '/zoo') return html`<zoo-view></zoo-view>`;
     if (path.startsWith('/session/')) {
       const mode = path.split('/')[2];
-      return this.createGameElement(mode);
+      return this.gameTemplate(mode);
     }
-    if (path === '/results') return document.createElement('results-screen');
-    // default: session launcher / home
-    return document.createElement('session-launcher');
+    if (path === '/results') return html`<results-screen></results-screen>`;
+    return html`<session-launcher></session-launcher>`;
   }
 
-  private createGameElement(mode: string): HTMLElement {
-    const map: Record<string, string> = {
-      flashcard: 'flashcard-game',
-      spelling: 'spelling-game',
-      match: 'match-game',
-      quickfire: 'quickfire-game',
-    };
-    return document.createElement(map[mode] ?? 'session-launcher');
-  }
-
-  private loadingTemplate(): string {
-    return `
-      <style>${styles}</style>
-      <div class="loader">
-        <img src="/animals/capybara.svg" alt="Loading…" />
-        <p>Loading Capybara Academy…</p>
-      </div>
-    `;
-  }
-
-  private sharedStyles(): string {
-    return styles;
+  private gameTemplate(mode: string): TemplateResult {
+    if (mode === 'flashcard') return html`<flashcard-game></flashcard-game>`;
+    if (mode === 'spelling') return html`<spelling-game></spelling-game>`;
+    if (mode === 'match') return html`<match-game></match-game>`;
+    if (mode === 'quickfire') return html`<quickfire-game></quickfire-game>`;
+    return html`<session-launcher></session-launcher>`;
   }
 }
 

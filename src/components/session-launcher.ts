@@ -1,3 +1,4 @@
+import { render, html, nothing } from 'lit-html';
 import { BaseComponent } from './base-component.js';
 import styles from './session-launcher.css?raw';
 import { wordsStore, profileStore, progressStore } from '../services/store.js';
@@ -33,7 +34,7 @@ export class SessionLauncher extends BaseComponent {
       ? ((xp - thisLevelXp) / (nextLevelXp - thisLevelXp)) * 100
       : 100;
 
-    this.root.innerHTML = `
+    render(html`
       <style>${styles}</style>
 
       <header>
@@ -42,27 +43,18 @@ export class SessionLauncher extends BaseComponent {
           Capybara Academy
         </div>
         <div class="header-right">
-          ${profile ? `<span class="streak">🔥 ${profile.streak}</span>` : ''}
-          ${profile ? `<span class="level-badge">Lv ${level}</span>` : ''}
+          ${profile ? html`<span class="streak">🔥 ${profile.streak}</span>` : nothing}
+          ${profile ? html`<span class="level-badge">Lv ${level}</span>` : nothing}
           <a class="logout-btn" href="${getLogoutUrl()}">Sign out</a>
         </div>
       </header>
 
       <main>
-        ${words.length === 0 ? this.noWordsTemplate() : this.contentTemplate(words.length, befriended, profile?.xp ?? 0, xpProgress)}
+        ${words.length === 0
+          ? this.noWordsTemplate()
+          : this.contentTemplate(words.length, befriended, xp, xpProgress)}
       </main>
-    `;
-
-    this.root.querySelectorAll('.mode-btn').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const mode = (btn as HTMLElement).dataset.mode as GameMode;
-        this.navigate(`/session/${mode}`);
-      });
-    });
-
-    this.root.querySelector('.zoo-link')?.addEventListener('click', () => {
-      this.navigate('/zoo');
-    });
+    `, this.root);
   }
 
   private contentTemplate(
@@ -70,8 +62,8 @@ export class SessionLauncher extends BaseComponent {
     befriended: number,
     xp: number,
     xpProgress: number,
-  ): string {
-    return `
+  ) {
+    return html`
       <div class="hero">
         <h2>Ready to learn? 🌿</h2>
         <p>${wordCount} words in your list — ${befriended} animals befriended</p>
@@ -96,23 +88,25 @@ export class SessionLauncher extends BaseComponent {
 
       <p class="modes-title">Choose a game mode:</p>
       <div class="modes">
-        ${GAME_MODES.map((m) => `
-          <button class="mode-btn" data-mode="${m.id}">
+        ${GAME_MODES.map((m) => html`
+          <button class="mode-btn" @click=${() => this.navigate(`/session/${m.id}`)}>
             <span class="mode-emoji">${m.emoji}</span>
             <span class="mode-info">
               <span class="mode-label">${m.label}</span>
               <span class="mode-desc">${m.desc}</span>
             </span>
           </button>
-        `).join('')}
+        `)}
       </div>
 
-      <button class="zoo-link">🦎 Visit your Zoo (${befriended}/${wordCount})</button>
+      <button class="zoo-link" @click=${() => this.navigate('/zoo')}>
+        🦎 Visit your Zoo (${befriended}/${wordCount})
+      </button>
     `;
   }
 
-  private noWordsTemplate(): string {
-    return `
+  private noWordsTemplate() {
+    return html`
       <div class="no-words">
         <p style="font-size:3rem">🌱</p>
         <p style="font-size:1.1rem;margin-top:12px">No words loaded yet!</p>

@@ -1,3 +1,4 @@
+import { render, html, nothing } from 'lit-html';
 import { BaseComponent } from './base-component.js';
 import styles from './results-screen.css?raw';
 import { wordsStore, progressStore, profileStore } from '../services/store.js';
@@ -25,12 +26,14 @@ export class ResultsScreen extends BaseComponent {
   }
 
   connectedCallback(): void {
-    // Results may be set via property before connectedCallback or after —
-    // listen for the session-complete event as a fallback when navigated here directly.
     if (this.results.length > 0) {
       this.processAndRender();
     } else {
-      this.root.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:var(--font-body);font-size:1.1rem;color:var(--color-text-muted)">Loading results…</div>`;
+      render(html`
+        <div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:var(--font-body);font-size:1.1rem;color:var(--color-text-muted)">
+          Loading results…
+        </div>
+      `, this.root);
     }
   }
 
@@ -42,7 +45,6 @@ export class ResultsScreen extends BaseComponent {
     const oldProgress = progressStore.value;
     const oldProfile = profileStore.value;
 
-    // Update progress optimistically
     const newProgress = applySessionResults(this.results, oldProgress);
     progressStore.set(newProgress);
 
@@ -70,13 +72,11 @@ export class ResultsScreen extends BaseComponent {
     };
     profileStore.set(updatedProfile);
 
-    // Persist to API
     Promise.all([
       api.putProgress(this.results),
       api.putProfile(updatedProfile),
     ]).catch((err) => console.error('Save failed:', err));
 
-    // Build list of newly befriended animals
     const newlyBefriended = words.filter((w) => {
       const was = getAnimalState(oldProgress.get(w.id));
       const now = getAnimalState(newProgress.get(w.id));
@@ -92,7 +92,7 @@ export class ResultsScreen extends BaseComponent {
     const xpBarFrom = Math.max(0, ((oldProfile?.xp ?? 0) - xpFrom) / (xpTo - xpFrom)) * 100;
     const xpBarTo = Math.max(0, (newXP - levelThreshold(newLevel)) / (levelThreshold(newLevel + 1) - levelThreshold(newLevel))) * 100;
 
-    this.root.innerHTML = `
+    render(html`
       <style>${styles}</style>
 
       <div class="trophy">${isPerfect ? '🏆' : correct > wrong ? '⭐' : '💪'}</div>
@@ -114,7 +114,7 @@ export class ResultsScreen extends BaseComponent {
         </div>
       </div>
 
-      ${levelUp ? `<div class="level-up">🎉 Level Up! You're now Level ${newLevel}!</div>` : ''}
+      ${levelUp ? html`<div class="level-up">🎉 Level Up! You're now Level ${newLevel}!</div>` : nothing}
 
       <div class="xp-section">
         <div class="xp-label">
@@ -124,35 +124,35 @@ export class ResultsScreen extends BaseComponent {
         <div class="xp-bar-wrap"><div class="xp-bar"></div></div>
       </div>
 
-      ${newlyBefriended.length > 0 ? `
+      ${newlyBefriended.length > 0 ? html`
         <div class="animals-section">
           <h2>🐾 New animal friends!</h2>
           <div class="animals-row">
-            ${newlyBefriended.map((w) => `
+            ${newlyBefriended.map((w) => html`
               <div class="animal-chip">
                 <img src="/animals/${getAnimalForWord(w.index)}.svg" alt="" />
                 ${w.english}
               </div>
-            `).join('')}
+            `)}
           </div>
         </div>
-      ` : ''}
+      ` : nothing}
 
-      ${newBadges.length > 0 ? `
+      ${newBadges.length > 0 ? html`
         <div class="badges-section">
           <h2>🏅 New badges!</h2>
           ${newBadges.map((id) => {
             const def = BADGES.find((b) => b.id === id);
-            return def ? `<span class="badge-chip">🏅 ${def.label}</span>` : '';
-          }).join('')}
+            return def ? html`<span class="badge-chip">🏅 ${def.label}</span>` : nothing;
+          })}
         </div>
-      ` : ''}
+      ` : nothing}
 
       <div class="btn-row">
-        <button class="btn-primary" id="play-again">Play Again</button>
-        <button class="btn-secondary" id="go-zoo">Visit Zoo 🦎</button>
+        <button class="btn-primary" @click=${() => this.navigate('/')}>Play Again</button>
+        <button class="btn-secondary" @click=${() => this.navigate('/zoo')}>Visit Zoo 🦎</button>
       </div>
-    `;
+    `, this.root);
 
     const xpBar = this.root.querySelector('.xp-bar') as HTMLElement | null;
     if (xpBar) {
@@ -160,9 +160,6 @@ export class ResultsScreen extends BaseComponent {
       xpBar.style.setProperty('--xp-to', `${xpBarTo.toFixed(1)}%`);
       xpBar.style.width = `${xpBarTo.toFixed(1)}%`;
     }
-
-    this.root.getElementById('play-again')?.addEventListener('click', () => this.navigate('/'));
-    this.root.getElementById('go-zoo')?.addEventListener('click', () => this.navigate('/zoo'));
   }
 }
 

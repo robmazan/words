@@ -1,3 +1,4 @@
+import { render, html, nothing } from 'lit-html';
 import { BaseComponent } from '../base-component.js';
 import styles from './spelling-game.css?raw';
 import { wordsStore, progressStore } from '../../services/store.js';
@@ -13,11 +14,8 @@ export class SpellingGame extends BaseComponent {
   private showingAnswer = false;
 
   connectedCallback(): void {
-    // Spelling bee: always English spelling — force en-to-hu direction isn't relevant;
-    // we always show/speak English and ask the user to spell it
     const words = wordsStore.value;
     const progress = progressStore.value;
-    // For spelling we always do en-to-hu direction (hear English, type English spelling)
     const session = selectSessionWords(words, progress);
     this.session = session.map((sw) => ({ ...sw, direction: 'hu-to-en' as const }));
     this.current = 0;
@@ -37,14 +35,14 @@ export class SpellingGame extends BaseComponent {
 
     const hasVoice = speech.isAvailable();
 
-    this.root.innerHTML = `
+    render(html`
       <style>${styles}</style>
 
       <div class="progress-bar-wrap"><div class="progress-bar"></div></div>
 
       <div class="header">
         <span>🔊 Spelling Bee — ${this.current + 1} / ${this.session.length}</span>
-        <button class="quit-btn">✕ Quit</button>
+        <button class="quit-btn" @click=${() => this.navigate('/')}>✕ Quit</button>
       </div>
 
       <main>
@@ -53,18 +51,19 @@ export class SpellingGame extends BaseComponent {
         <div class="hungarian-hint">🇭🇺 ${sw.word.hungarian}</div>
 
         <div class="speak-row">
-          <button class="speak-btn" id="speak-btn" ${!hasVoice ? 'disabled' : ''}>
+          <button class="speak-btn" id="speak-btn" ?disabled=${!hasVoice}
+            @click=${() => speech.speak(sw.word.english)}>
             🔊 Hear the word
           </button>
         </div>
 
-        ${!hasVoice ? `
+        ${!hasVoice ? html`
           <div class="letter-reveal" id="letter-reveal">
-            ${sw.word.english.split('').map((ch, i) =>
-              `<span class="letter" style="--i:${i}">${ch === ' ' ? '&nbsp;' : ch}</span>`
-            ).join('')}
+            ${sw.word.english.split('').map((ch, i) => html`
+              <span class="letter" style="--i:${i}">${ch === ' ' ? html`&nbsp;` : ch}</span>
+            `)}
           </div>
-        ` : ''}
+        ` : nothing}
 
         <div class="input-row">
           <input
@@ -81,20 +80,16 @@ export class SpellingGame extends BaseComponent {
 
         <div class="feedback" style="display:none"></div>
       </main>
-    `;
+    `, this.root);
 
     const bar = this.root.querySelector('.progress-bar') as HTMLElement | null;
     if (bar) bar.style.width = `${((this.current / this.session.length) * 100).toFixed(1)}%`;
 
     const input = this.root.getElementById('answer') as HTMLInputElement;
-    const speakBtn = this.root.getElementById('speak-btn') as HTMLButtonElement;
     const submitBtn = this.root.querySelector('.submit-btn') as HTMLButtonElement;
     const feedback = this.root.querySelector('.feedback') as HTMLElement;
 
-    speakBtn?.addEventListener('click', () => speech.speak(sw.word.english));
-
     if (hasVoice) {
-      // Auto-speak on load
       setTimeout(() => speech.speak(sw.word.english), 300);
     }
 
@@ -109,7 +104,6 @@ export class SpellingGame extends BaseComponent {
 
     input.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit(); });
     submitBtn.addEventListener('click', submit);
-    this.root.querySelector('.quit-btn')?.addEventListener('click', () => this.navigate('/'));
     input.focus();
   }
 

@@ -1,3 +1,4 @@
+import { render, html } from 'lit-html';
 import { BaseComponent } from './base-component.js';
 import { wordsStore, progressStore } from '../services/store.js';
 import { getAnimalForWord, getAnimalState } from '../services/session.js';
@@ -17,11 +18,11 @@ export class ZooView extends BaseComponent {
     const peeking = words.filter((w) => getAnimalState(progress.get(w.id)) === 'peeking').length;
     const locked = words.length - befriended - peeking;
 
-    this.root.innerHTML = `
+    render(html`
       <style>${styles}</style>
 
       <header>
-        <button class="back-btn" id="back">←</button>
+        <button class="back-btn" @click=${() => this.navigate('/')}>←</button>
         <h1>🦎 Your Zoo</h1>
         <span class="summary">${befriended} / ${words.length} befriended</span>
       </header>
@@ -40,9 +41,9 @@ export class ZooView extends BaseComponent {
             const animal = getAnimalForWord(word.index);
             const mastery = prog?.masteryLevel ?? 0;
 
-            return `
+            return html`
               <div class="animal-card ${state}">
-                ${state === 'befriended' ? '<span class="badge-befriended">⭐</span>' : ''}
+                ${state === 'befriended' ? html`<span class="badge-befriended">⭐</span>` : ''}
                 <img
                   class="animal-img"
                   src="/animals/${animal}.svg"
@@ -54,18 +55,16 @@ export class ZooView extends BaseComponent {
                 </span>
                 <span class="word-hu">${state === 'locked' ? '???' : word.hungarian}</span>
                 <div class="mastery-stars">
-                  ${[1,2,3,4].map((i) =>
-                    `<span class="star ${i <= mastery ? 'filled' : ''}">★</span>`
-                  ).join('')}
+                  ${[1, 2, 3, 4].map((i) => html`
+                    <span class="star ${i <= mastery ? 'filled' : ''}">★</span>
+                  `)}
                 </div>
               </div>
             `;
-          }).join('')}
+          })}
         </div>
       </main>
-    `;
-
-    this.root.getElementById('back')?.addEventListener('click', () => this.navigate('/'));
+    `, this.root);
   }
 }
 

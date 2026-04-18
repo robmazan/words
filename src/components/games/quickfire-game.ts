@@ -1,3 +1,4 @@
+import { render, html } from 'lit-html';
 import { BaseComponent } from '../base-component.js';
 import styles from './quickfire-game.css?raw';
 import { wordsStore, progressStore } from '../../services/store.js';
@@ -73,14 +74,17 @@ export class QuickfireGame extends BaseComponent {
     this.startTime = Date.now();
     this.showingFeedback = false;
 
-    this.root.innerHTML = `
+    render(html`
       <style>${styles}</style>
 
       <div class="top-bar">
-        <span class="timer" id="timer" style="color:${this.timeLeft <= 10 ? 'var(--color-error)' : 'var(--color-primary-dark)'}">${this.timeLeft}</span>
+        <span class="timer" id="timer"
+          style="color:${this.timeLeft <= 10 ? 'var(--color-error)' : 'var(--color-primary-dark)'}">
+          ${this.timeLeft}
+        </span>
         <span class="streak">🔥 ×${this.streak}</span>
         <span class="score">${this.results.filter((r) => r.correct).length} correct</span>
-        <button class="quit-btn">✕ Quit</button>
+        <button class="quit-btn" @click=${() => { this.clearTimer(); this.navigate('/'); }}>✕ Quit</button>
       </div>
 
       <main>
@@ -96,21 +100,14 @@ export class QuickfireGame extends BaseComponent {
             autocorrect="off"
             autocapitalize="off"
             spellcheck="false"
+            @keydown=${(e: KeyboardEvent) => { if (e.key === 'Enter') this.submit(e.target as HTMLInputElement, sw); }}
           />
-          <button class="skip-btn">Skip</button>
+          <button class="skip-btn" @click=${() => this.skip(sw)}>Skip</button>
         </div>
       </main>
-    `;
+    `, this.root);
 
     const input = this.root.getElementById('answer') as HTMLInputElement;
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') this.submit(input, sw);
-    });
-    this.root.querySelector('.skip-btn')?.addEventListener('click', () => this.skip(sw));
-    this.root.querySelector('.quit-btn')?.addEventListener('click', () => {
-      this.clearTimer();
-      this.navigate('/');
-    });
     input.focus();
   }
 
