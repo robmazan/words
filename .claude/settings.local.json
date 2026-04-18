@@ -3,5 +3,21 @@
     "allow": [
       "Bash(npm install *)"
     ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"import sys,json; d=json.load(sys.stdin); print(d.get('tool_input',{}).get('file_path',''))\" | { read -r f; case \"$f\" in *.ts) npm run build && npm run api:build ;; esac; }",
+            "statusMessage": "Building frontend and API...",
+            "async": true,
+            "timeout": 120
+          }
+        ]
+      }
+    ]
   }
 }
