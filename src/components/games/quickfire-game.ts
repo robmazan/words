@@ -78,10 +78,7 @@ export class QuickfireGame extends BaseComponent {
       <style>${styles}</style>
 
       <div class="top-bar">
-        <span class="timer" id="timer"
-          style="color:${this.timeLeft <= 10 ? 'var(--color-error)' : 'var(--color-primary-dark)'}">
-          ${this.timeLeft}
-        </span>
+        <span class="timer" id="timer"></span>
         <span class="streak">🔥 ×${this.streak}</span>
         <span class="score">${this.results.filter((r) => r.correct).length} correct</span>
         <button class="quit-btn" @click=${() => { this.clearTimer(); this.navigate('/'); }}>✕ Quit</button>
@@ -107,7 +104,12 @@ export class QuickfireGame extends BaseComponent {
       </main>
     `, this.root);
 
+    const timerEl = this.root.getElementById('timer') as HTMLElement;
+    timerEl.textContent = String(this.timeLeft);
+    timerEl.style.color = this.timeLeft <= 10 ? 'var(--color-error)' : 'var(--color-primary-dark)';
+
     const input = this.root.getElementById('answer') as HTMLInputElement;
+    input.value = '';
     input.focus();
   }
 

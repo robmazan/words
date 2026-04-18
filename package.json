@@ -9,10 +9,13 @@
     "preview": "vite preview",
     "start": "swa start http://localhost:5173 --api-location api/ --devserver-timeout 60000",
     "api:build": "cd api && npm run build",
-    "api:start": "cd api && npm run start"
+    "api:start": "cd api && npm run start",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui"
   },
   "devDependencies": {
     "@azure/static-web-apps-cli": "^2.0.2",
+    "@playwright/test": "^1.59.1",
     "typescript": "^5.4.5",
     "vite": "^5.2.11"
   },

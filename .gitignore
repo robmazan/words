@@ -6,4 +6,4 @@ api/local.settings.json
 .env
 .swa/
 .azurite/
-
+.playwright-mcp/

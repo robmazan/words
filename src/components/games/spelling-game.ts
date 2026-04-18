@@ -74,8 +74,9 @@ export class SpellingGame extends BaseComponent {
             autocorrect="off"
             autocapitalize="off"
             spellcheck="false"
+            @keydown=${(e: KeyboardEvent) => { if (e.key === 'Enter') this.handleSubmit(sw); }}
           />
-          <button class="submit-btn">Check ✓</button>
+          <button class="submit-btn" @click=${() => this.handleSubmit(sw)}>Check ✓</button>
         </div>
 
         <div class="feedback" style="display:none"></div>
@@ -86,25 +87,33 @@ export class SpellingGame extends BaseComponent {
     if (bar) bar.style.width = `${((this.current / this.session.length) * 100).toFixed(1)}%`;
 
     const input = this.root.getElementById('answer') as HTMLInputElement;
-    const submitBtn = this.root.querySelector('.submit-btn') as HTMLButtonElement;
+    input.value = '';
+    input.classList.remove('correct', 'wrong');
+
+    const btn = this.root.querySelector('.submit-btn') as HTMLButtonElement;
+    btn.textContent = 'Check ✓';
+
     const feedback = this.root.querySelector('.feedback') as HTMLElement;
+    feedback.style.display = 'none';
+    feedback.className = 'feedback';
+
+    input.focus();
 
     if (hasVoice) {
       setTimeout(() => speech.speak(sw.word.english), 300);
     }
+  }
 
-    const submit = () => {
-      if (this.showingAnswer) {
-        this.current++;
-        this.renderCard();
-        return;
-      }
-      this.checkAnswer(input, feedback, submitBtn, sw);
-    };
-
-    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit(); });
-    submitBtn.addEventListener('click', submit);
-    input.focus();
+  private handleSubmit(sw: SessionWord): void {
+    if (this.showingAnswer) {
+      this.current++;
+      this.renderCard();
+      return;
+    }
+    const input = this.root.getElementById('answer') as HTMLInputElement;
+    const feedback = this.root.querySelector('.feedback') as HTMLElement;
+    const btn = this.root.querySelector('.submit-btn') as HTMLButtonElement;
+    this.checkAnswer(input, feedback, btn, sw);
   }
 
   private checkAnswer(
