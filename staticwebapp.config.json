@@ -42,15 +42,6 @@
         "authenticated"
       ],
       "redirect": "/login"
-    },
-    {
-      "route": "/assets/*",
-      "methods": [
-        "get"
-      ],
-      "allowedRoles": [
-        "anonymous"
-      ]
     }
   ],
   "navigationFallback": {
