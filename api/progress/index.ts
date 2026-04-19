@@ -1,6 +1,6 @@
-import { app, HttpRequest, HttpResponseInit, InvocationContext } from '@azure/functions';
+import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import { TableClient, odata } from '@azure/data-tables';
-import { getUserFromRequest } from './utils/auth.js';
+import { getUserFromRequest } from '../shared/auth';
 
 interface ProgressEntity {
   partitionKey: string;
@@ -44,12 +44,12 @@ function nextReviewDate(masteryLevel: number): string {
   return d.toISOString();
 }
 
-export async function handleProgress(
-  req: HttpRequest,
-  context: InvocationContext,
-): Promise<HttpResponseInit> {
+const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
   const user = getUserFromRequest(req);
-  if (!user) return { status: 401, body: 'Unauthorized' };
+  if (!user) {
+    context.res = { status: 401, body: 'Unauthorized' };
+    return;
+  }
 
   if (req.method === 'GET') {
     try {
@@ -68,24 +68,24 @@ export async function handleProgress(
         lastReviewed: e.lastReviewed,
         nextReview: e.nextReview,
       }));
-      return {
+      context.res = {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(result),
       };
     } catch (err) {
-      context.error('getProgress failed', err);
-      return { status: 500, body: 'Failed to load progress' };
+      context.log.error('getProgress failed', err);
+      context.res = { status: 500, body: 'Failed to load progress' };
     }
+    return;
   }
 
   if (req.method === 'PUT') {
     try {
-      const results = (await req.json()) as SessionResult[];
+      const results = req.body as SessionResult[];
       const client = await getTableClient();
       const now = new Date().toISOString();
 
-      // Fetch existing progress for these words
       const existing = new Map<string, ProgressEntity>();
       for await (const entity of client.listEntities<ProgressEntity>({
         queryOptions: { filter: odata`PartitionKey eq ${user.userId}` },
@@ -114,19 +114,15 @@ export async function handleProgress(
       }
 
       await Promise.all(upserts);
-      return { status: 204 };
+      context.res = { status: 204 };
     } catch (err) {
-      context.error('putProgress failed', err);
-      return { status: 500, body: 'Failed to save progress' };
+      context.log.error('putProgress failed', err);
+      context.res = { status: 500, body: 'Failed to save progress' };
     }
+    return;
   }
 
-  return { status: 405 };
-}
+  context.res = { status: 405 };
+};
 
-app.http('progress', {
-  methods: ['GET', 'PUT'],
-  authLevel: 'anonymous',
-  route: 'progress',
-  handler: handleProgress,
-});
+export default httpTrigger;

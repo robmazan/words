@@ -1,7 +1,7 @@
-import { app, HttpRequest, HttpResponseInit, InvocationContext } from '@azure/functions';
+import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import { BlobServiceClient } from '@azure/storage-blob';
 import { parse } from 'csv-parse/sync';
-import { getUserFromRequest } from './utils/auth.js';
+import { getUserFromRequest } from '../shared/auth';
 import { readFile } from 'fs/promises';
 import path from 'path';
 
@@ -14,7 +14,6 @@ interface WordRow {
   index: number;
 }
 
-// Simple in-memory cache with 5-minute TTL
 let cachedWords: WordRow[] | null = null;
 let cacheTime = 0;
 const CACHE_TTL = 5 * 60 * 1000;
@@ -67,29 +66,24 @@ async function fetchWords(): Promise<WordRow[]> {
   return cachedWords;
 }
 
-export async function getWords(
-  req: HttpRequest,
-  context: InvocationContext,
-): Promise<HttpResponseInit> {
+const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
   const user = getUserFromRequest(req);
-  if (!user) return { status: 401, body: 'Unauthorized' };
+  if (!user) {
+    context.res = { status: 401, body: 'Unauthorized' };
+    return;
+  }
 
   try {
     const words = await fetchWords();
-    return {
+    context.res = {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(words),
     };
   } catch (err) {
-    context.error('getWords failed', err);
-    return { status: 500, body: 'Failed to load word list' };
+    context.log.error('getWords failed', err);
+    context.res = { status: 500, body: 'Failed to load word list' };
   }
-}
+};
 
-app.http('words', {
-  methods: ['GET'],
-  authLevel: 'anonymous',
-  route: 'words',
-  handler: getWords,
-});
+export default httpTrigger;

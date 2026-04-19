@@ -1,6 +1,6 @@
-import { app, HttpRequest, HttpResponseInit, InvocationContext } from '@azure/functions';
+import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import { TableClient } from '@azure/data-tables';
-import { getUserFromRequest } from './utils/auth.js';
+import { getUserFromRequest } from '../shared/auth';
 
 interface ProfileEntity {
   partitionKey: string;
@@ -29,14 +29,7 @@ function getTableClient(): TableClient {
 }
 
 function defaultProfile(userId: string): UserProfile {
-  return {
-    userId,
-    xp: 0,
-    level: 0,
-    streak: 0,
-    lastLoginDate: '',
-    badges: [],
-  };
+  return { userId, xp: 0, level: 0, streak: 0, lastLoginDate: '', badges: [] };
 }
 
 function entityToProfile(entity: ProfileEntity): UserProfile {
@@ -50,42 +43,42 @@ function entityToProfile(entity: ProfileEntity): UserProfile {
   };
 }
 
-export async function handleProfile(
-  req: HttpRequest,
-  context: InvocationContext,
-): Promise<HttpResponseInit> {
+const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
   const user = getUserFromRequest(req);
-  if (!user) return { status: 401, body: 'Unauthorized' };
+  if (!user) {
+    context.res = { status: 401, body: 'Unauthorized' };
+    return;
+  }
 
   const client = getTableClient();
 
   if (req.method === 'GET') {
     try {
       const entity = await client.getEntity<ProfileEntity>(user.userId, 'profile');
-      return {
+      context.res = {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(entityToProfile(entity)),
       };
     } catch (err: unknown) {
-      // 404 = first-time user, return defaults
       if ((err as { statusCode?: number }).statusCode === 404) {
-        return {
+        context.res = {
           status: 200,
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(defaultProfile(user.userId)),
         };
+        return;
       }
-      context.error('getProfile failed', err);
-      return { status: 500, body: 'Failed to load profile' };
+      context.log.error('getProfile failed', err);
+      context.res = { status: 500, body: 'Failed to load profile' };
     }
+    return;
   }
 
   if (req.method === 'PUT') {
     try {
-      const update = (await req.json()) as Partial<UserProfile>;
+      const update = req.body as Partial<UserProfile>;
 
-      // Fetch existing to merge
       let existing: UserProfile;
       try {
         const entity = await client.getEntity<ProfileEntity>(user.userId, 'profile');
@@ -107,23 +100,19 @@ export async function handleProfile(
       };
 
       await client.upsertEntity(entity, 'Replace');
-      return {
+      context.res = {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(merged),
       };
     } catch (err) {
-      context.error('putProfile failed', err);
-      return { status: 500, body: 'Failed to save profile' };
+      context.log.error('putProfile failed', err);
+      context.res = { status: 500, body: 'Failed to save profile' };
     }
+    return;
   }
 
-  return { status: 405 };
-}
+  context.res = { status: 405 };
+};
 
-app.http('profile', {
-  methods: ['GET', 'PUT'],
-  authLevel: 'anonymous',
-  route: 'profile',
-  handler: handleProfile,
-});
+export default httpTrigger;

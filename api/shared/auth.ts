@@ -7,7 +7,7 @@ export interface Principal {
 }
 
 export function getUserFromRequest(req: HttpRequest): Principal | null {
-  const header = req.headers.get('x-ms-client-principal');
+  const header = req.headers['x-ms-client-principal'] as string | undefined;
   if (!header) return null;
   try {
     const decoded = Buffer.from(header, 'base64').toString('utf-8');
