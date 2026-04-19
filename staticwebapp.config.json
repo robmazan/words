@@ -44,7 +44,7 @@
       "redirect": "/login"
     },
     {
-      "route": "/assets",
+      "route": "/assets/*",
       "methods": [
         "get"
       ],
