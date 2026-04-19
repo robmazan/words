@@ -24,7 +24,8 @@ export function clearUserCache(): void {
 }
 
 export function getLoginUrl(): string {
-  return '/.auth/login/microsoft?post_login_redirect_uri=/';
+  // return '/.auth/login/microsoft?post_login_redirect_uri=/';
+  return '/.auth/login/aad?post_login_redirect_uri=/';
 }
 
 export function getLogoutUrl(): string {
