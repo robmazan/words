@@ -50,7 +50,7 @@ async function fetchWords(): Promise<WordRow[]> {
   const records = parse(csv, {
     columns: ['english', 'hungarian', 'exampleSentence', 'dateAdded'],
     skip_empty_lines: true,
-    from_line: 1,
+    from_line: 2,
     trim: true,
     relax_quotes: true,
   }) as Array<{ english: string; hungarian: string; exampleSentence: string; dateAdded: string }>;
