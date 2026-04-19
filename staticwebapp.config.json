@@ -1,20 +1,74 @@
 {
   "routes": [
-    { "route": "/api/*", "allowedRoles": ["authenticated"] },
-    { "route": "/login", "allowedRoles": ["anonymous"] },
-    { "route": "/animals/*", "allowedRoles": ["anonymous"] },
-    { "route": "/@vite/*", "allowedRoles": ["anonymous"] },
-    { "route": "/src/*", "allowedRoles": ["anonymous"] },
-    { "route": "/node_modules/*", "allowedRoles": ["anonymous"] },
+    {
+      "route": "/api/*",
+      "allowedRoles": [
+        "authenticated"
+      ]
+    },
+    {
+      "route": "/login",
+      "allowedRoles": [
+        "anonymous"
+      ]
+    },
+    {
+      "route": "/animals/*",
+      "allowedRoles": [
+        "anonymous"
+      ]
+    },
+    {
+      "route": "/@vite/*",
+      "allowedRoles": [
+        "anonymous"
+      ]
+    },
+    {
+      "route": "/src/*",
+      "allowedRoles": [
+        "anonymous"
+      ]
+    },
+    {
+      "route": "/node_modules/*",
+      "allowedRoles": [
+        "anonymous"
+      ]
+    },
     {
       "route": "/*",
-      "allowedRoles": ["authenticated"],
+      "allowedRoles": [
+        "authenticated"
+      ],
       "redirect": "/login"
+    },
+    {
+      "route": "/assets",
+      "methods": [
+        "get"
+      ],
+      "allowedRoles": [
+        "anonymous"
+      ]
     }
   ],
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/api/*", "/animals/*", "/badges/*", "/*.svg", "/*.png", "/@vite/*", "/src/*", "/node_modules/*", "/*.ts", "/*.tsx", "/*.js", "/*.css"]
+    "exclude": [
+      "/api/*",
+      "/animals/*",
+      "/badges/*",
+      "/*.svg",
+      "/*.png",
+      "/@vite/*",
+      "/src/*",
+      "/node_modules/*",
+      "/*.ts",
+      "/*.tsx",
+      "/*.js",
+      "/*.css"
+    ]
   },
   "responseOverrides": {
     "401": {
